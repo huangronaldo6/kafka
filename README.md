@@ -61,3 +61,10 @@ Kafka是分布式发布-订阅消息系统,它最初由 LinkedIn 公司开发，
 * 在 kafka中,我们可以认为一个group是一个“订阅者”，一个Topic中的每个partions，只会被一个“订阅者”中的一个consumer消费，不过一个 consumer可以消费多个partitions中的消息（消费者数据小于Partions的数量时）。
   * 注意：kafka的设计原理决定，对于一个topic，同一个group中不能有多于partitions个数的consumer同时消费，否则将意味着某些consumer将无法得到消息。
 * 一个partition中的消息只会被group中的一个consumer消息。每个group中consumer消息消费互相独立。
+
+# 1.11 Kafka的持久化
+一个Topic可以认为是一类消息，每个topic将被分成多partition(区),每个partition在存储层面是append log文件。任何发布到此partition的消息都会被直接追加到log文件的尾部，每条消息在文件中的位置称为offset（偏移量），partition是以文件的形式存储在文件系统中。
+
+* Logs文件根据broker中的配置要求,保留一定时间后删除来释放磁盘空间。
+* Partition：
+  * Topic物理上的分组，一个 topic可以分为多个 partition，每个 partition 是一个有序的队列。partition中的每条消息都会被分配一个有序的 id（offset）。
